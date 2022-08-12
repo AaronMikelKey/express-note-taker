@@ -1,9 +1,10 @@
 const express =require('express')
+const path = require('path')
 
 const app = express()
 
 app.get('/', (req, res) => {
-	res.send('Hello world!')
+	res.sendFile(path.join(__dirname, './Develop/public/index.html'))
 })
 
 module.exports = app
