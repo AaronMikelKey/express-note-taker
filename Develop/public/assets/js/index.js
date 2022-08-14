@@ -63,9 +63,15 @@ const renderActiveNote = () => {
 };
 
 const handleNoteSave = () => {
+	// Generate random object ID
+	const ObjectId = (m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) =>
+    s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h))
+	
+	const newId = ObjectId()
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
+		id: newId
   };
   saveNote(newNote).then(() => {
     getAndRenderNotes();
@@ -93,7 +99,6 @@ const handleNoteDelete = (e) => {
 
 // Sets the activeNote and displays it
 const handleNoteView = (e) => {
-	console.log('Showing active note')
   e.preventDefault();
   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
 	activeNote.id = activeNote

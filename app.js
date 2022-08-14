@@ -26,15 +26,16 @@ app.post('/api/notes', (req, res) => {
 	const dbData = JSON.parse(fs.readFileSync(path.join(__dirname, '/Develop/db/db.json')))
 	dbData.push(newNote)
 	fs.writeFileSync(path.join(__dirname, '/Develop/db/db.json'), JSON.stringify(dbData, null, 2))
-	res.redirect('/notes')
+	res.end()
 })
 
-app.delete('/api/notes/:id', (req, res) => {
+app.delete('/api/notes/:id', (req, res, next) => {
 	const deletedNote = req.params.id
 	const dbData = JSON.parse(fs.readFileSync(path.join(__dirname, '/Develop/db/db.json')))
-	dbData.splice(dbData.indexOf(deletedNote), 1)
+	const index = dbData.map(e => e.id).indexOf(deletedNote)
+	dbData.splice(index, 1)
 	fs.writeFileSync(path.join(__dirname, '/Develop/db/db.json'), JSON.stringify(dbData, null, 2))
-	res.redirect('/notes')
+	res.end()
 })
 
 module.exports = app
