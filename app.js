@@ -1,5 +1,6 @@
 const express =require('express')
 const path = require('path')
+const fs = require('fs')
 
 const app = express()
 
@@ -18,6 +19,13 @@ app.get('/notes', (req, res) => {
 
 app.get('/api/notes', (req, res) => {
 	res.sendFile(path.join(__dirname, '/Develop/db/db.json'))
+})
+
+app.post('/api/notes', (req, res) => {
+	const newNote = req.body
+	const dbData = JSON.parse(fs.readFileSync(path.join(__dirname, '/Develop/db/db.json')))
+	dbData.push(newNote)
+	fs.writeFileSync(path.join(__dirname, '/Develop/db/db.json'), JSON.stringify(dbData, null, 2))
 })
 
 module.exports = app
