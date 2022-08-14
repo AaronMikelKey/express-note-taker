@@ -13,8 +13,11 @@ app.get('/', (req, res) => {
 	res.sendFile('/index.html')})
 
 app.get('/notes', (req, res) => {
-	console.log(req.body)
 	res.sendFile(path.join(__dirname, '/Develop/public/notes.html'))
+})
+
+app.get('/api/notes', (req, res) => {
+	res.sendFile(path.join(__dirname, '/Develop/db/db.json'))
 })
 
 module.exports = app
