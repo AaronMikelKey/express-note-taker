@@ -1,6 +1,6 @@
 const express =require('express')
 const path = require('path')
-const fs = require('fs')
+const apiRouter = require('./routes/api')
 
 const app = express()
 
@@ -17,25 +17,6 @@ app.get('/notes', (req, res) => {
 	res.sendFile(path.join(__dirname, '/Develop/public/notes.html'))
 })
 
-app.get('/api/notes', (req, res) => {
-	res.sendFile(path.join(__dirname, '/Develop/db/db.json'))
-})
-
-app.post('/api/notes', (req, res) => {
-	const newNote = req.body
-	const dbData = JSON.parse(fs.readFileSync(path.join(__dirname, '/Develop/db/db.json')))
-	dbData.push(newNote)
-	fs.writeFileSync(path.join(__dirname, '/Develop/db/db.json'), JSON.stringify(dbData, null, 2))
-	res.end()
-})
-
-app.delete('/api/notes/:id', (req, res, next) => {
-	const deletedNote = req.params.id
-	const dbData = JSON.parse(fs.readFileSync(path.join(__dirname, '/Develop/db/db.json')))
-	const index = dbData.map(e => e.id).indexOf(deletedNote)
-	dbData.splice(index, 1)
-	fs.writeFileSync(path.join(__dirname, '/Develop/db/db.json'), JSON.stringify(dbData, null, 2))
-	res.end()
-})
+app.use('/api', apiRouter)
 
 module.exports = app
